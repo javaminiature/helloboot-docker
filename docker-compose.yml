@@ -1,0 +1,30 @@
+version: '3'
+services:
+  helloboot:
+    build:
+        context: ./
+        dockerfile: HellobootDockerfile
+    image: helloboot
+    container_name: helloboot
+    hostname: helloboot
+    deploy:
+      replicas: 5   
+    networks:
+     - default
+     
+  hellobootweb:
+    build:
+        context: ./
+        dockerfile: HellobootWebDockerfile
+    image: hellobootweb
+    depends_on:
+      - helloboot
+    container_name: hellobootweb
+    hostname: hellobootweb
+    environment:
+      - HELLO_BOOT_API_SERVER_NAME=http://helloboot:8080
+    ports: 
+      - "8080:8080"
+    networks:
+     - default
+      
